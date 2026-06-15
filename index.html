@@ -3,23 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no, address=no, email=no, date=no">
     <title>Quiz: Che Zibetto Sei? - Ziretto Edition</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* Palette colori campionata dai documenti forniti */
-            --bg-cream: #F9F7F2;
-            --ziretto-pink: #CE4F6E;
-            --ziretto-lilac: #D0B3CD;
-            --ziretto-green: #70B384;
-            --ziretto-orange: #CE6541;
+            /* Palette ufficiale Ziretto campionata */
+            --bg-cream: #F8F6F0;
+            --ziretto-pink: #C8466C;
+            --ziretto-lilac: #D3B9CE;
+            --ziretto-green: #6FAF81;
+            --ziretto-orange: #CE623E;
             --ziretto-blue: #9ECBD7;
             --black: #000000;
             --white: #ffffff;
         }
 
         body {
-            background: linear-gradient(135deg, #be3d65 0%, #ca5b4f 40%, #76b17a 80%, #be416b 100%);
+            background: linear-gradient(135deg, #c43b67 0%, #cc5a4a 45%, #6faf81 85%, #c43b67 100%);
             background-attachment: fixed;
             display: flex;
             justify-content: center;
@@ -27,10 +32,16 @@
             min-height: 100vh;
             margin: 0;
             padding: 20px;
-            /* Configurato esclusivamente il font Futura per tutto il corpo della pagina */
-            font-family: 'Futura', 'Futura-Medium', 'Futura Condensed', 'Century Gothic', AppleGothic, sans-serif;
+            /* Utilizzo del font universale Montserrat (stile Futura) garantito su ogni smartphone */
+            font-family: 'Montserrat', 'Futura', sans-serif;
             color: var(--black);
             -webkit-font-smoothing: antialiased;
+        }
+
+        /* Forza tutti i link o i testi auto-generati a rimanere neri e senza sottolineature */
+        a, a:hover, a:active, a:focus {
+            color: inherit !important;
+            text-decoration: none !important;
         }
 
         #quiz-card {
@@ -38,7 +49,7 @@
             max-width: 500px;
             width: 100%;
             padding: 40px 35px;
-            border-radius: 24px; /* Forme tondeggianti e morbide */
+            border-radius: 24px;
             box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.15);
             text-align: center;
             border: 3px solid var(--black);
@@ -63,9 +74,7 @@
             transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Configurazione dei Titoli con il Futura Bold */
         h1 { 
-            font-family: 'Futura', 'Futura-CondensedExtraBold', 'Futura-Bold', 'Century Gothic', sans-serif;
             font-weight: 900;
             text-transform: uppercase;
             color: var(--black); 
@@ -99,9 +108,8 @@
             margin-bottom: 20px;
         }
 
-        /* Tasti risposta con forme tondeggianti */
         .option-btn {
-            font-family: 'Futura', 'Futura-Medium', 'Century Gothic', sans-serif;
+            font-family: 'Montserrat', 'Futura', sans-serif;
             background: var(--white);
             border: 2px solid var(--black);
             padding: 16px 20px;
@@ -112,6 +120,7 @@
             border-radius: 14px; 
             transition: all 0.2s ease;
             text-align: left;
+            color: var(--black);
         }
 
         .option-btn:hover {
@@ -131,7 +140,6 @@
             transform: translateY(0);
         }
 
-        /* Navigazione inferiore per tornare indietro */
         .nav-container {
             display: flex;
             justify-content: flex-start;
@@ -139,7 +147,7 @@
         }
 
         .back-btn {
-            font-family: 'Futura', 'Futura-Medium', 'Century Gothic', sans-serif;
+            font-family: 'Montserrat', 'Futura', sans-serif;
             background: transparent;
             border: none;
             color: var(--black);
@@ -160,7 +168,6 @@
 
         .hidden { display: none; }
 
-        /* Contenitore Immagine Risultato */
         #result-screen img {
             width: 240px;
             height: 240px;
@@ -173,7 +180,7 @@
         }
 
         .download-btn {
-            font-family: 'Futura', 'Futura-Bold', 'Century Gothic', sans-serif;
+            font-family: 'Montserrat', 'Futura', sans-serif;
             display: inline-block;
             background: var(--ziretto-orange);
             color: var(--white);
@@ -197,7 +204,7 @@
         }
 
         .start-btn {
-            font-family: 'Futura', 'Futura-Bold', 'Century Gothic', sans-serif;
+            font-family: 'Montserrat', 'Futura', sans-serif;
             background: var(--ziretto-pink);
             color: var(--white);
             border: 2px solid var(--black);
@@ -268,7 +275,7 @@
             { t: "Mando a quel paese la sveglia e l'universo intero.", p: "FacciaCaffe" }
           ]
         },
-        { q: "Al ristorante, qual è il tuo criterio principale per scegliere dal menù?", 
+        { q: "Al restaurante, qual è il tuo criterio principale per scegliere dal menù?", 
           options: [
             { t: "Scelgo il piatto più costoso. Se non è un lusso, non lo voglio.", p: "VIP" },
             { t: "Piatto proteico: devo mantenere tonico il mio 'lato migliore'.", p: "LatoB" },
@@ -354,13 +361,12 @@
             { t: "Macchiato freddo scremato: la linea viene prima di tutto.", p: "LatoB" },
             { t: "In rigoroso silenzio per 40 minuti. Guai a chi mi interrompe.", p: "RilascioLento" },
             { t: "Triplo espresso in un sorso stando in piedi al bancone.", p: "Esplosivo" },
-            { t: "Solo monorigine estratto a 92 gradi esatti.", p: "StronzoAutore" },
+            { t: "Solo monorigine espresso a 92 gradi esatti.", p: "StronzoAutore" },
             { t: "Nero, amaro e bollente. Come le mie risposte.", p: "FacciaCaffe" }
           ]
         }
     ];
 
-    // Configurazione dei file con i nomi precisi caricati sul server locale
     const archetypes = {
         VIP: { desc: "Esigente e amante del lusso. Cerchi la qualità assoluta e pretendi il meglio (servito su un piatto d'argento).", img: "TRATTAMENTO VIP.jpg" },
         LatoB: { desc: "Fiero della tua presenza scenica! Sai esattamente come valorizzarti e lasciare che sia il tuo lato migliore a parlare.", img: "TUTTO LATO B.jpg" },
@@ -458,7 +464,6 @@
         const imgElement = document.getElementById('result-img');
         imgElement.src = data.img;
 
-        // Gestore del Download Universale (Compatibile con iOS, Android e Desktop)
         const downloadBtn = document.getElementById('download-btn');
         downloadBtn.onclick = function() {
             fetch(data.img)
@@ -474,7 +479,6 @@
                     window.URL.revokeObjectURL(blobUrl);
                 })
                 .catch(() => {
-                    // Fallback di sicurezza se caricato senza server locale: apre l'immagine direttamente per il salvataggio manuale
                     window.open(data.img, '_blank');
                 });
         };
