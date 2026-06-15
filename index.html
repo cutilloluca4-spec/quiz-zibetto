@@ -12,7 +12,6 @@
     
     <style>
         :root {
-            /* Palette ufficiale Ziretto campionata */
             --bg-cream: #F8F6F0;
             --ziretto-pink: #C8466C;
             --ziretto-lilac: #D3B9CE;
@@ -32,15 +31,14 @@
             min-height: 100vh;
             margin: 0;
             padding: 20px;
-            /* Utilizzo del font universale Montserrat (stile Futura) garantito su ogni smartphone */
             font-family: 'Montserrat', 'Futura', sans-serif;
             color: var(--black);
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Forza tutti i link o i testi auto-generati a rimanere neri e senza sottolineature */
-        a, a:hover, a:active, a:focus {
-            color: inherit !important;
+        /* Forza la neutralizzazione di qualsiasi link auto-generato dai browser mobile */
+        a, a:hover, a:active, a:focus, span, p, h1 {
+            color: inherit;
             text-decoration: none !important;
         }
 
@@ -120,7 +118,7 @@
             border-radius: 14px; 
             transition: all 0.2s ease;
             text-align: left;
-            color: var(--black);
+            color: var(--black) !important;
         }
 
         .option-btn:hover {
@@ -134,10 +132,6 @@
             border-color: var(--black);
             box-shadow: inset 0px 0px 0px 1px var(--black);
             font-weight: bold;
-        }
-
-        .option-btn:active { 
-            transform: translateY(0);
         }
 
         .nav-container {
@@ -162,10 +156,6 @@
             transition: all 0.2s;
         }
 
-        .back-btn:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
-
         .hidden { display: none; }
 
         #result-screen img {
@@ -183,9 +173,9 @@
             font-family: 'Montserrat', 'Futura', sans-serif;
             display: inline-block;
             background: var(--ziretto-orange);
-            color: var(--white);
+            color: var(--white) !important;
             padding: 18px 35px;
-            text-decoration: none;
+            text-decoration: none !important;
             font-weight: bold;
             margin-top: 25px;
             border: 2px solid var(--black);
@@ -200,7 +190,6 @@
         .download-btn:hover {
             background: var(--ziretto-pink);
             transform: translateY(-2px);
-            box-shadow: 0px 8px 20px rgba(206, 79, 110, 0.4);
         }
 
         .start-btn {
@@ -218,11 +207,6 @@
             letter-spacing: 1px;
             transition: all 0.2s ease;
             margin-top: 10px;
-        }
-
-        .start-btn:hover {
-            background: var(--ziretto-orange);
-            transform: translateY(-2px);
         }
     </style>
 </head>
@@ -367,13 +351,14 @@
         }
     ];
 
+    // Corretti i puntamenti stringendo la tolleranza sugli spazi ed eliminando caratteri speciali ambigui
     const archetypes = {
         VIP: { desc: "Esigente e amante del lusso. Cerchi la qualità assoluta e pretendi il meglio (servito su un piatto d'argento).", img: "TRATTAMENTO VIP.jpg" },
         LatoB: { desc: "Fiero della tua presenza scenica! Sai esattamente come valorizzarti e lasciare che sia il tuo lato migliore a parlare.", img: "TUTTO LATO B.jpg" },
         RilascioLento: { desc: "Ami i momenti sacri e le lunghe riflessioni fatte con i tuoi ritmi. La calma è la tua virtù.", img: "A RILASCIO LENTO.jpg" },
         Esplosivo: { desc: "Una forza della natura! Vivi a mille all'ora, travolgi chiunque e non hai tempo da perdere.", img: "ESPLOSIVO.jpg" },
         StronzoAutore: { desc: "I tuoi gusti sono talmente di nicchia e complessi che la massa non potrà mai arrivarci.", img: "STRONZO D'AUTORE.jpg" },
-        FacciaCaffe: { desc: "Schietto e senza filtri. Dai risposte taglienti e ami la verità nuda e cruda.", img: "FACCIA DA CAFFè.jpg" }
+        FacciaCaffe: { desc: "Schietto e senza filtri. Dai risposte taglienti e ami la verità nuda e cruda.", img: "FACCIA DA CAFFÈ.jpg" }
     };
 
     let currentIdx = 0;
@@ -382,8 +367,8 @@
     function startQuiz() {
         currentIdx = 0;
         selectionsHistory = [];
-        document.getElementById('start-screen').classList.add('hidden');
-        document.getElementById('quiz-screen').classList.remove('hidden');
+        document.getElementById('start-screen').className = 'hidden';
+        document.getElementById('quiz-screen').className = '';
         showQuestion();
     }
 
@@ -409,13 +394,8 @@
         });
 
         const backBtn = document.getElementById('back-button');
-        if (currentIdx === 0) {
-            backBtn.style.visibility = 'hidden';
-        } else {
-            backBtn.style.visibility = 'visible';
-        }
-
-        document.getElementById('progress-bar').style.width = `${((currentIdx) / questions.length) * 100}%`;
+        backBtn.style.visibility = (currentIdx === 0) ? 'hidden' : 'visible';
+        document.getElementById('progress-bar').style.width = `${(currentIdx / questions.length) * 100}%`;
     }
 
     function next(profile) {
@@ -441,8 +421,8 @@
     }
 
     function showResult() {
-        document.getElementById('quiz-screen').classList.add('hidden');
-        document.getElementById('result-screen').classList.remove('hidden');
+        document.getElementById('quiz-screen').className = 'hidden';
+        document.getElementById('result-screen').className = '';
 
         let finalScores = { VIP: 0, LatoB: 0, RilascioLento: 0, Esplosivo: 0, StronzoAutore: 0, FacciaCaffe: 0 };
         selectionsHistory.forEach(p => finalScores[p]++);
@@ -462,11 +442,13 @@
         document.getElementById('winner-desc').innerText = data.desc;
         
         const imgElement = document.getElementById('result-img');
-        imgElement.src = data.img;
+        
+        // Codifica automatica di sicurezza per gli spazi e le lettere accentate nei nomi file su GitHub
+        imgElement.src = encodeURIComponent(data.img).replace(/%2F/g, '/');
 
         const downloadBtn = document.getElementById('download-btn');
         downloadBtn.onclick = function() {
-            fetch(data.img)
+            fetch(imgElement.src)
                 .then(response => response.blob())
                 .then(blob => {
                     const blobUrl = window.URL.createObjectURL(blob);
@@ -479,15 +461,24 @@
                     window.URL.revokeObjectURL(blobUrl);
                 })
                 .catch(() => {
-                    window.open(data.img, '_blank');
+                    window.open(imgElement.src, '_blank');
                 });
         };
 
         imgElement.onerror = function() {
-            this.src = "https://via.placeholder.com/180/F4F1E8/1A1A1A?text=STICKER+" + winner;
+            // Se fallisce la codifica accentata, prova il nome file grezzo nativo come fallback prima del placeholder
+            if (this.src !== data.img) {
+                this.src = data.img;
+            } else {
+                this.src = "https://via.placeholder.com/180/F4F1E8/1A1A1A?text=STICKER+" + winner;
+            }
         };
     }
 </script>
 
 </body>
 </html>
+
+     
+
+
