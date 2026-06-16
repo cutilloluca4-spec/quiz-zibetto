@@ -121,7 +121,7 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* STRATEGI TOUCH / RESPONSIVE (Evita che il blu resti bloccato su mobile) */
+        /* STRATEGIA TOUCH MOBILE: Nessun azzurro fisso dopo il click */
         @media (hover: hover) {
             .option-btn:hover {
                 background-color: var(--ziretto-blue);
@@ -358,14 +358,14 @@
         }
     ];
 
-    /* IDENTICO AL TUO STORAGE SU GITHUB CON LE CORRETTE MAIUSCOLE/MINUSCOLE */
+    /* FILE RINOMINATO SENZA SPAZI E SENZA ACCENTI */
     const archetypes = {
         VIP: { desc: "Esigente e amante del lusso. Cerchi la qualità assoluta e pretendi il meglio (servito su un piatto d'argento).", img: "TRATTAMENTO VIP.jpg" },
         LatoB: { desc: "Fiero della tua presenza scenica! Sai esattamente come valorizzarti e lasciare che sia il tuo lato migliore a parlare.", img: "TUTTO LATO B.jpg" },
         RilascioLento: { desc: "Ami i momenti sacri e le lunghe riflessioni fatte con i tuoi ritmi. La calma è la tua virtù.", img: "A RILASCIO LENTO.jpg" },
         Esplosivo: { desc: "Una forza della natura! Vivi a mille all'ora, travolgi chiunque e non hai tempo da perdere.", img: "ESPLOSIVO.jpg" },
         StronzoAutore: { desc: "I tuoi gusti sono talmente di nicchia e complessi che la massa non potrà mai arrivarci.", img: "STRONZO D'AUTORE.jpg" },
-        FacciaCaffe: { desc: "Schietto e senza filtri. Dai risposte taglienti e ami la verità nuda e cruda.", img: "FACCIA DA CAFfè.jpg" }
+        FacciaCaffe: { desc: "Schietto e senza filtri. Dai risposte taglienti e ami la verità nuda e cruda.", img: "FACCIA-DA-CAFFE.jpg" }
     };
 
     let currentIdx = 0;
