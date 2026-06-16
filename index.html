@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="format-detection" content="telephone=no, address=no, email=no, date=no">
     <title>Quiz: Che Zibetto Sei? - Ziretto Edition</title>
     
@@ -36,7 +36,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Forza la neutralizzazione di qualsiasi link auto-generato dai browser mobile */
         a, a:hover, a:active, a:focus, span, p, h1 {
             color: inherit;
             text-decoration: none !important;
@@ -116,19 +115,29 @@
             font-weight: 500;
             line-height: 1.3;
             border-radius: 14px; 
-            transition: all 0.2s ease;
+            transition: background-color 0.2s, transform 0.1s;
             text-align: left;
             color: var(--black) !important;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .option-btn:hover {
+        /* FIX MOBILE: L'effetto hover blu si attiva solo su desktop con mouse vero */
+        @media (hover: hover) {
+            .option-btn:hover {
+                background-color: var(--ziretto-blue);
+                transform: translateY(-2px);
+                box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+            }
+        }
+
+        /* Feedback rapido al tocco su mobile che svanisce subito */
+        .option-btn:active {
             background-color: var(--ziretto-blue);
-            transform: translateY(-2px);
-            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
         }
 
+        /* Mostra la selezione solo per le risposte passate quando si clicca "Indietro" */
         .option-btn.selected {
-            background-color: var(--ziretto-blue);
+            background-color: var(--ziretto-blue) !important;
             border-color: var(--black);
             box-shadow: inset 0px 0px 0px 1px var(--black);
             font-weight: bold;
@@ -259,7 +268,7 @@
             { t: "Mando a quel paese la sveglia e l'universo intero.", p: "FacciaCaffe" }
           ]
         },
-        { q: "Al ristorante, qual è il tuo criterio principale per scegliere dal menù?", 
+        { q: "Al ristorante, qual è il tuo criterion principale per scegliere dal menù?", 
           options: [
             { t: "Scelgo il piatto più costoso. Se non è un lusso, non lo voglio.", p: "VIP" },
             { t: "Piatto proteico: devo mantenere tonico il mio 'lato migliore'.", p: "LatoB" },
@@ -326,7 +335,7 @@
             { t: "Baita isolata: transitare solo tra letto, poltrona e bagno.", p: "RilascioLento" },
             { t: "On the road: 15 città in 3 giorni con 3 ore di sonno.", p: "Esplosivo" },
             { t: "Festival d'arte underground in una città che nessuno conosce.", p: "StronzoAutore" },
-            { t: "Mi imbbuco alle feste degli hotel di lusso finché non mi cacciano.", p: "FacciaCaffe" }
+            { t: "Mi imbuco alle feste degli hotel di lusso finché non mi cacciano.", p: "FacciaCaffe" }
           ]
         },
         { q: "Cosa non può mai mancare nel tuo guardaroba?", 
@@ -351,7 +360,7 @@
         }
     ];
 
-    // Corretti i puntamenti stringendo la tolleranza sugli spazi ed eliminando caratteri speciali ambigui
+    /* CORREZIONE CHIAVE: "img" ora riflette esattamente il nome file del tuo GitHub con la "È" maiuscola */
     const archetypes = {
         VIP: { desc: "Esigente e amante del lusso. Cerchi la qualità assoluta e pretendi il meglio (servito su un piatto d'argento).", img: "TRATTAMENTO VIP.jpg" },
         LatoB: { desc: "Fiero della tua presenza scenica! Sai esattamente come valorizzarti e lasciare che sia il tuo lato migliore a parlare.", img: "TUTTO LATO B.jpg" },
@@ -373,6 +382,7 @@
     }
 
     function showQuestion() {
+        window.scrollTo(0, 0); // Riporta su la pagina a ogni nuova domanda (comodo su mobile)
         const q = questions[currentIdx];
         document.getElementById('question-text').innerText = q.q;
         const container = document.getElementById('options-container');
@@ -399,11 +409,7 @@
     }
 
     function next(profile) {
-        if (selectionsHistory[currentIdx]) {
-            selectionsHistory[currentIdx] = profile;
-        } else {
-            selectionsHistory.push(profile);
-        }
+        selectionsHistory[currentIdx] = profile;
 
         currentIdx++;
         if (currentIdx < questions.length) {
@@ -443,8 +449,9 @@
         
         const imgElement = document.getElementById('result-img');
         
-        // Codifica automatica di sicurezza per gli spazi e le lettere accentate nei nomi file su GitHub
-        imgElement.src = encodeURIComponent(data.img).replace(/%2F/g, '/');
+        // Questo converte gli spazi in %20 e mantiene le lettere speciali intatte per i server di GitHub
+        let srcUrl = encodeURI(data.img);
+        imgElement.src = srcUrl;
 
         const downloadBtn = document.getElementById('download-btn');
         downloadBtn.onclick = function() {
@@ -466,7 +473,6 @@
         };
 
         imgElement.onerror = function() {
-            // Se fallisce la codifica accentata, prova il nome file grezzo nativo come fallback prima del placeholder
             if (this.src !== data.img) {
                 this.src = data.img;
             } else {
@@ -478,5 +484,3 @@
 
 </body>
 </html>
-
-
