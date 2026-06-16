@@ -121,7 +121,7 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* FIX MOBILE: L'effetto hover blu si attiva solo su desktop con mouse vero */
+        /* STRATEGI TOUCH / RESPONSIVE (Evita che il blu resti bloccato su mobile) */
         @media (hover: hover) {
             .option-btn:hover {
                 background-color: var(--ziretto-blue);
@@ -130,12 +130,10 @@
             }
         }
 
-        /* Feedback rapido al tocco su mobile che svanisce subito */
         .option-btn:active {
             background-color: var(--ziretto-blue);
         }
 
-        /* Mostra la selezione solo per le risposte passate quando si clicca "Indietro" */
         .option-btn.selected {
             background-color: var(--ziretto-blue) !important;
             border-color: var(--black);
@@ -268,7 +266,7 @@
             { t: "Mando a quel paese la sveglia e l'universo intero.", p: "FacciaCaffe" }
           ]
         },
-        { q: "Al ristorante, qual è il tuo criterion principale per scegliere dal menù?", 
+        { q: "Al ristorante, qual è il tuo criterio principale per scegliere dal menù?", 
           options: [
             { t: "Scelgo il piatto più costoso. Se non è un lusso, non lo voglio.", p: "VIP" },
             { t: "Piatto proteico: devo mantenere tonico il mio 'lato migliore'.", p: "LatoB" },
@@ -360,14 +358,14 @@
         }
     ];
 
-    /* CORREZIONE CHIAVE: "img" ora riflette esattamente il nome file del tuo GitHub con la "È" maiuscola */
+    /* IDENTICO AL TUO STORAGE SU GITHUB CON LE CORRETTE MAIUSCOLE/MINUSCOLE */
     const archetypes = {
         VIP: { desc: "Esigente e amante del lusso. Cerchi la qualità assoluta e pretendi il meglio (servito su un piatto d'argento).", img: "TRATTAMENTO VIP.jpg" },
         LatoB: { desc: "Fiero della tua presenza scenica! Sai esattamente come valorizzarti e lasciare che sia il tuo lato migliore a parlare.", img: "TUTTO LATO B.jpg" },
         RilascioLento: { desc: "Ami i momenti sacri e le lunghe riflessioni fatte con i tuoi ritmi. La calma è la tua virtù.", img: "A RILASCIO LENTO.jpg" },
         Esplosivo: { desc: "Una forza della natura! Vivi a mille all'ora, travolgi chiunque e non hai tempo da perdere.", img: "ESPLOSIVO.jpg" },
         StronzoAutore: { desc: "I tuoi gusti sono talmente di nicchia e complessi che la massa non potrà mai arrivarci.", img: "STRONZO D'AUTORE.jpg" },
-        FacciaCaffe: { desc: "Schietto e senza filtri. Dai risposte taglienti e ami la verità nuda e cruda.", img: "FACCIA DA CAFFÈ.jpg" }
+        FacciaCaffe: { desc: "Schietto e senza filtri. Dai risposte taglienti e ami la verità nuda e cruda.", img: "FACCIA DA CAFfè.jpg" }
     };
 
     let currentIdx = 0;
@@ -382,7 +380,7 @@
     }
 
     function showQuestion() {
-        window.scrollTo(0, 0); // Riporta su la pagina a ogni nuova domanda (comodo su mobile)
+        window.scrollTo(0, 0);
         const q = questions[currentIdx];
         document.getElementById('question-text').innerText = q.q;
         const container = document.getElementById('options-container');
@@ -410,7 +408,6 @@
 
     function next(profile) {
         selectionsHistory[currentIdx] = profile;
-
         currentIdx++;
         if (currentIdx < questions.length) {
             showQuestion();
@@ -448,10 +445,7 @@
         document.getElementById('winner-desc').innerText = data.desc;
         
         const imgElement = document.getElementById('result-img');
-        
-        // Questo converte gli spazi in %20 e mantiene le lettere speciali intatte per i server di GitHub
-        let srcUrl = encodeURI(data.img);
-        imgElement.src = srcUrl;
+        imgElement.src = encodeURI(data.img);
 
         const downloadBtn = document.getElementById('download-btn');
         downloadBtn.onclick = function() {
